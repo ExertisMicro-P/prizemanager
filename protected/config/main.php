@@ -11,12 +11,12 @@
 // for 'auth' module https://github.com/Crisu83/yii-auth
 
 
-return array(
+$config_array = array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Prize Manager',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
+	'preload'=>array('log','input'),
 
      // path aliases
     'aliases' => array(
@@ -121,6 +121,12 @@ return array(
                     'class' => 'bootstrap.components.TbApi',
                 ),
 
+		'input'=>array(
+				'class'         => 'CmsInput',
+				'cleanPost'     => true,
+				'cleanGet'      => true,
+		),
+
 		// uncomment the following to enable URLs in path-format
 
 		'urlManager'=>array(
@@ -145,13 +151,29 @@ return array(
 		// uncomment the following to use a MySQL database
 
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=yii-prizemanager',
+			'connectionString' => 'mysql:host='. DBHOST .';dbname=' . DBNAME,
 			'emulatePrepare' => true,
-			'username' => 'russellh',
-			'password' => 'sl58jySL%*JY',
+                        'username' => DBUSER,
+                        'password' => DBPASS,
 			'charset' => 'utf8',
+			'enableParamLogging'=>!IS_PUBLIC_FACING, // Turned off RCH  20121018
+			'schemaCachingDuration' => 300,  // Performance enhancement? as per http://www.yiiframework.com/forum/index.php?/topic/14974-schemacachingduration/
+			'enableProfiling'=> !IS_PUBLIC_FACING, // Turned off RCH  20121018
 		),
 
+			'session' => array (
+					'sessionName' => 'mdfsaccess',
+					//'cookieMode' => 'none',
+					'class' => 'CDbHttpSession',
+					'timeout'=>43200,  // 12 hours
+					'cookieParams' => array(
+							//'secure' => true,
+							'httponly'=>true,
+					),
+			),
+		'cache'=>array(
+			   'class'=>'system.caching.CFileCache', // Performance enhancement? as per http://www.yiiframework.com/forum/index.php?/topic/14974-schemacachingduration/
+			),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
@@ -159,10 +181,26 @@ return array(
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
-				array(
-					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
+			array(
+					'class'=>'MPFileLogRoute', // to prevent application.log permission issues when running console (as user) & app (as web)
+					'levels'=>'info, error, warning',
+						'maxFileSize'=>10240,
+						'maxLogFiles'=>30
 				),
+array(
+                                        'class'=>'CDbLogRoute',
+                                        'levels'=>'error, warning',
+				 	'connectionID' => 'db',
+					'filter'=>'CLogFilter',
+                                ),
+								
+				array(
+                    'class'=>'CEmailLogRoute',
+                    'levels'=>'error',
+                    'emails'=>array('russell.hutson@exertismicro-p.co.uk'),
+                                        'sentFrom'=>'prizemanager@exertismicro-p.co.uk'
+                ),
+
 				// uncomment the following to show log messages on web pages
 				/*
 				array(
@@ -203,3 +241,4 @@ return array(
 		'adminEmail'=>'webmaster@example.com',
 	),
 );
+return $config_array;
