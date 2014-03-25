@@ -132,13 +132,14 @@ $config_array = array(
 		'urlManager'=>array(
 
 			'urlFormat'=>'path',
+			'caseSensitive'=>false,
 			'rules'=>/*array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),*/
                     require(
-                dirname(__FILE__).'/../extensions/RestfullYii/starship/RestfullYii/config/routes.php'
+                dirname(__FILE__).'/../extensions/RESTFullYii/starship/RestfullYii/config/routes.php'
             ),
 		),
 
