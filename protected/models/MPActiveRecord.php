@@ -37,7 +37,7 @@ class MPActiveRecord extends CActiveRecord {
 			$messages = $message;
 
 		foreach($messages as $msg) {
-                    $this->_logToAuditTrail($msg);
+                   // $this->_logToAuditTrail($msg);
 		}
 
 		return $result;

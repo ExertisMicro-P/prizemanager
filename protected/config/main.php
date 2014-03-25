@@ -42,7 +42,7 @@ $config_array = array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'rg248qy',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
-			'ipFilters'=>array('127.0.0.1','::1','172.27.14.150'),
+			'ipFilters'=>array('127.0.0.1','::1','172.27.14.150','172.27.15.36'),
                     'generatorPaths' => array('bootstrap.gii'),
 		),
 
@@ -121,11 +121,11 @@ $config_array = array(
                     'class' => 'bootstrap.components.TbApi',
                 ),
 
-		'input'=>array(
+		/*'input'=>array(
 				'class'         => 'CmsInput',
 				'cleanPost'     => true,
 				'cleanGet'      => true,
-		),
+		),*/
 
 		// uncomment the following to enable URLs in path-format
 
@@ -162,7 +162,7 @@ $config_array = array(
 		),
 
 			'session' => array (
-					'sessionName' => 'mdfsaccess',
+					'sessionName' => 'aprilPrizes',
 					//'cookieMode' => 'none',
 					'class' => 'CDbHttpSession',
 					'timeout'=>43200,  // 12 hours
@@ -200,6 +200,7 @@ array(
                     'emails'=>array('russell.hutson@exertismicro-p.co.uk'),
                                         'sentFrom'=>'prizemanager@exertismicro-p.co.uk'
                 ),
+                                
 
 				// uncomment the following to show log messages on web pages
 				/*
@@ -213,6 +214,9 @@ array(
             'authManager' => array(
                 //'class' => 'auth.components.CachedDbAuthManager',
                 //'cachingDuration' => 3600,
+                
+                'class'=>'CDbAuthManager',
+                'connectionID'=>'db',
 
                 'behaviors' => array(
                   'auth' => array(

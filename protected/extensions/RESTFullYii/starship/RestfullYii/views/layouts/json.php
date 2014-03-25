@@ -7,5 +7,6 @@
 		[$this->emitRest(ERestEvent::REQ_CORS_ACCESS_CONTROL_ALLOW_ORIGIN)]
 	)) {
 		@header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
+                
 	}
 	echo $content;

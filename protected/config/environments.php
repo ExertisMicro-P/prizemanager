@@ -28,7 +28,14 @@ class MPEnvironments {
                         'yii'       => dirname(__FILE__).'/../../../yii-1.1.14/framework/yii.php'
                     ),
 
-
+            'mb002462.micro-p.com'=>array(
+                    'dbhost'=>'localhost',
+                    'dbname'=>'yii-prizemanager',
+                    'dbuser'=>'root',
+                    'dbpassword'=>'',
+                    'public'    => false,
+                    'yii'       => dirname(__FILE__).'/../../../yii-1.1.14/framework/yii.php'
+                    ),
 
 );
         } // defineEnvironments

@@ -227,3 +227,7 @@ div.search-form
 {
 	background: #80CFFF;
 }
+
+div#ui-datepicker-div.ui-datepicker{
+    background-color: #eee;
+}
