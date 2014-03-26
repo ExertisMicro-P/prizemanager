@@ -7,17 +7,16 @@ $this->layout='//layouts/column2';
 $this->menu=array(
     array('label'=>UserModule::t('List Users'), 'url'=>array('index')),
     array('label'=>UserModule::t('View User Profile'), 'url'=>array('/user/profile', array('id'=>$model->id))),
-
 );
 ?>
 <h1><?php echo UserModule::t('View User').' "'.$model->username.'"'; ?></h1>
-<?php
+<?php 
 
 // For all users
 	$attributes = array(
 			'username',
 	);
-
+	
 	$profileFields=ProfileField::model()->forAll()->sort()->findAll();
 	if ($profileFields) {
 		foreach($profileFields as $field) {
@@ -36,7 +35,7 @@ $this->menu=array(
 			'value' => (($model->lastvisit_at!='0000-00-00 00:00:00')?$model->lastvisit_at:UserModule::t('Not visited')),
 		)
 	);
-
+			
 	$this->widget('zii.widgets.CDetailView', array(
 		'data'=>$model,
 		'attributes'=>$attributes,

@@ -16,8 +16,6 @@ class PrizeController extends Controller
 	 */
 	public function filters()
 	{
-            $_SERVER['HTTP_X_PRIZEMANAGER_CORS']=1; // RCH 20140325 see ERestEventListenerRegistry::run()
-
 		return CMap::mergeArray(parent::filters(),array(
 		//'accessControl', // perform access control for CRUD operations
                     //array('auth.filters.AuthFilter'),
@@ -29,51 +27,48 @@ class PrizeController extends Controller
                         REST.GET, REST.PUT, REST.POST, REST.DELETE'),
 		));
 	}
-
-
+        
+        
         public function restEvents()
         {
             $this->onRest('req.cors.access.control.allow.origin', function() {
                  return['*'];
              });
-
              $this->onRest('req.cors.access.control.allow.headers', function() {
                 return ['Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin'];
             });
-
+            
              $this->onRest('req.cors.access.control.allow.methods', function() {
                  return['GET','POST'];
              });
-
+             
              $this->onRest('pre.filter.req.auth.cors', function($allowed_origins) {
                     return $allowed_origins; //Array
                 });
-
-
-
+         
             $this->onRest('req.auth.ajax.user', function() {
-
                 return true;
             });
-
               $this->onRest('req.auth.cors', function() {
                 return true;
             });
-
-
-
             $this->onRest('req.get.resources.render', function($param1)
             {
-                header('Access-Control-Allow-Origin: *');
+               if (isset($_SERVER['HTTP_REFERER'])) {
+                $http_referer = parse_url($_SERVER['HTTP_REFERER']);
+                $domain = $http_referer['host'];
+
+                    $http_origin = $domain;
+                    if ($http_origin == "icom.sandbox.websys.co.uk" || $http_origin == "www.exertismicro-p.co.uk")
+                {
+                       header('Access-Control-Allow-Origin: '.$http_referrer['scheme'].$http_referrer['host']);
+                    }
+                } else {
+                    header('Access-Control-Allow-Origin: *');
+                }
+                //header('Content-Type: application/json');
                 echo CJSON::encode(['prizes'=>Prize::model()->getPrizes()]);
             });
-
-
-            $this->onRest('config.application.id', function($param1)
-            {
-                return 'PRIZEMANAGER';
-            });
-
         }
 
 
@@ -83,7 +78,7 @@ class PrizeController extends Controller
                 'REST.'=>'RestfullYii.actions.ERestActionProvider',
             );
         }
-
+        
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -92,7 +87,7 @@ class PrizeController extends Controller
 	public function accessRules()
 	{
 		return array(
-
+			
              array('allow', 'actions'=>array('REST.GET', 'REST.PUT', 'REST.POST', 'REST.DELETE'),
             'users'=>array('*'),
             ),
@@ -132,7 +127,7 @@ class PrizeController extends Controller
 		}
                 //get all dates so far used
                 $dates =Prize::model()->getUnavailableDates();
-
+                
 		$this->render('create',array(
 			'model'=>$model,
                         'dates'=>$dates
@@ -237,10 +232,10 @@ class PrizeController extends Controller
 			Yii::app()->end();
 		}
 	}
-
-
+        
+      
         public function actionAjaxgetprizesavailable(){
             //Prize::model()->getPrizes()
         }
-
+        
 }

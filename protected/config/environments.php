@@ -19,7 +19,7 @@ class MPEnvironments {
 
 
             'mb002095.micro-p.com'=>array(
-                        'dbhost'=>'mb002462.micro-p.com',
+                        'dbhost'=>'localhost',
                         'dbname'=>'yii-prizemanager',
                         'dbuser'=>'russellh',
                         'dbpassword'=>'sl58jySL%*JY',
@@ -128,6 +128,8 @@ define('DBHOST', $curEnvironment['dbhost']) ;
 define('DBNAME', $curEnvironment['dbname']) ;
 define('DBUSER', $curEnvironment['dbuser']) ;
 define('DBPASS', $curEnvironment['dbpassword']) ;
+
+//die(print_r($curEnvironment ,true));
 
 $yii    = $curEnvironment['yii'] ;
 

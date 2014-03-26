@@ -17,11 +17,16 @@ class UserEntryController extends Controller
 		//'accessControl', // perform access control for CRUD operations
                 array('auth.filters.AuthFilter'),
 
-
 		));
 	}
+        
+        
 
 
+            
+             
+             
+         
 
 
         public function actions()
@@ -30,7 +35,7 @@ class UserEntryController extends Controller
 
             );
         }
-
+        
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -39,7 +44,7 @@ class UserEntryController extends Controller
 	public function accessRules()
 	{
 		return array(
-
+			
 
 //            array('deny',  // deny all users
 //                'users'=>array('*'),

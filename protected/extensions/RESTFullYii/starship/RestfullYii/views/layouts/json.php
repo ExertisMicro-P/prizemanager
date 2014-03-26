@@ -9,7 +9,7 @@
 		//@header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
 		//@header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Origin: *');
-                die(__LINE__);
+ 
 
 	//}
 	echo $content;

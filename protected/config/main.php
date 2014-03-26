@@ -34,7 +34,6 @@ $config_array = array(
                 'application.modules.user.models.*', // for https://github.com/mishamx/yii-user
                 'application.modules.user.components.*',
                 'application.modules.auth.components.*',
-            'application.modules.auth.*',
 	),
 
 	'modules'=>array(
@@ -136,13 +135,42 @@ $config_array = array(
 
 			'urlFormat'=>'path',
 			//caseSensitive'=>false,
-			'rules'=>/*array(
-				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+			
+			'rules'=>array(
+				/*'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),*/
-                    require(
-                dirname(__FILE__).'/../extensions/RESTFullYii/starship/RestfullYii/config/routes.php'
+                //    require(
+                //dirname(__FILE__).'/../extensions/RESTFullYii/starship/RestfullYii/config/routes.php'
+					'api/<controller:\w+>'=>['<controller>/REST.GET', 'verb'=>'GET'],
+	'api/<controller:\w+>/<id:\w*>'=>['<controller>/REST.GET', 'verb'=>'GET'],
+	'api/<controller:\w+>/<id:\w*>/<param1:\w*>'=>['<controller>/REST.GET', 'verb'=>'GET'],
+	'api/<controller:\w+>/<id:\w*>/<param1:\w*>/<param2:\w*>'=>['<controller>/REST.GET', 'verb'=>'GET'],
+
+	['<controller>/REST.PUT', 'pattern'=>'api/<controller:\w+>/<id:\w*>', 'verb'=>'PUT'],
+	['<controller>/REST.PUT', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>', 'verb'=>'PUT'],
+	['<controller>/REST.PUT', 'pattern'=>'api/<controller:\w*>/<id:\w*>/<param1:\w*>/<param2:\w*>', 'verb'=>'PUT'],	
+
+	['<controller>/REST.DELETE', 'pattern'=>'api/<controller:\w+>/<id:\w*>', 'verb'=>'DELETE'],
+	['<controller>/REST.DELETE', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>', 'verb'=>'DELETE'],
+	['<controller>/REST.DELETE', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>/<param2:\w*>', 'verb'=>'DELETE'],
+
+	['<controller>/REST.POST', 'pattern'=>'api/<controller:\w+>', 'verb'=>'POST'],
+	['<controller>/REST.POST', 'pattern'=>'api/<controller:\w+>/<id:\w+>', 'verb'=>'POST'],
+	['<controller>/REST.POST', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>', 'verb'=>'POST'],
+	['<controller>/REST.POST', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>/<param2:\w*>', 'verb'=>'POST'],
+
+	['<controller>/REST.OPTIONS', 'pattern'=>'api/<controller:\w+>', 'verb'=>'OPTIONS'],
+	['<controller>/REST.OPTIONS', 'pattern'=>'api/<controller:\w+>/<id:\w+>', 'verb'=>'OPTIONS'],
+	['<controller>/REST.OPTIONS', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>', 'verb'=>'OPTIONS'],
+	['<controller>/REST.OPTIONS', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>/<param2:\w*>', 'verb'=>'OPTIONS'],
+
+	'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+	'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+	'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+	
+				'user/<controller:\w+>/<action:\w+>'=>'user/<controller>/<action>'
             ),
 		),
 
@@ -197,14 +225,14 @@ array(
 				 	'connectionID' => 'db',
 					'filter'=>'CLogFilter',
                                 ),
-
+								
 				array(
                     'class'=>'CEmailLogRoute',
                     'levels'=>'error',
                     'emails'=>array('russell.hutson@exertismicro-p.co.uk'),
                                         'sentFrom'=>'prizemanager@exertismicro-p.co.uk'
                 ),
-
+                                
 
 				// uncomment the following to show log messages on web pages
 				/*
@@ -218,13 +246,14 @@ array(
             'authManager' => array(
                 //'class' => 'auth.components.CachedDbAuthManager',
                 //'cachingDuration' => 3600,
-
+                
                 'class'=>'CDbAuthManager',
                 'connectionID'=>'db',
 
                 'behaviors' => array(
                   'auth' => array(
                     'class' => 'auth.components.AuthBehavior',
+
                   ),
                 ),
               ),
