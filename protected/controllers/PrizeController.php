@@ -16,49 +16,74 @@ class PrizeController extends Controller
 	 */
 	public function filters()
 	{
+            $_SERVER['HTTP_X_PRIZEMANAGER_CORS']=1; // RCH 20140325 see ERestEventListenerRegistry::run()
+
 		return CMap::mergeArray(parent::filters(),array(
-		'accessControl', // perform access control for CRUD operations
+		//'accessControl', // perform access control for CRUD operations
                     //array('auth.filters.AuthFilter'),
                      array(
                         'RestfullYii.filters.ERestFilter +
                         REST.GET, REST.PUT, REST.POST, REST.DELETE'
                     ),
+                    array('auth.filters.AuthFilter  -
+                        REST.GET, REST.PUT, REST.POST, REST.DELETE'),
 		));
 	}
-        
-        
+
+
         public function restEvents()
         {
             $this->onRest('req.cors.access.control.allow.origin', function() {
                  return['*'];
              });
+
              $this->onRest('req.cors.access.control.allow.headers', function() {
                 return ['Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin'];
             });
-            
+
              $this->onRest('req.cors.access.control.allow.methods', function() {
                  return['GET','POST'];
              });
-             
-             
-         
+
+             $this->onRest('pre.filter.req.auth.cors', function($allowed_origins) {
+                    return $allowed_origins; //Array
+                });
+
+
+
             $this->onRest('req.auth.ajax.user', function() {
+
                 return true;
             });
+
+              $this->onRest('req.auth.cors', function() {
+                return true;
+            });
+
+
+
             $this->onRest('req.get.resources.render', function($param1)
             {
+                header('Access-Control-Allow-Origin: *');
                 echo CJSON::encode(['prizes'=>Prize::model()->getPrizes()]);
             });
+
+
+            $this->onRest('config.application.id', function($param1)
+            {
+                return 'PRIZEMANAGER';
+            });
+
         }
 
 
         public function actions()
         {
             return array(
-                'REST.'=>'ext.RestfullYii.starship.RestfullYii.actions.ERestActionProvider',
+                'REST.'=>'RestfullYii.actions.ERestActionProvider',
             );
         }
-        
+
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -67,7 +92,7 @@ class PrizeController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
+
              array('allow', 'actions'=>array('REST.GET', 'REST.PUT', 'REST.POST', 'REST.DELETE'),
             'users'=>array('*'),
             ),
@@ -107,7 +132,7 @@ class PrizeController extends Controller
 		}
                 //get all dates so far used
                 $dates =Prize::model()->getUnavailableDates();
-                
+
 		$this->render('create',array(
 			'model'=>$model,
                         'dates'=>$dates
@@ -212,10 +237,10 @@ class PrizeController extends Controller
 			Yii::app()->end();
 		}
 	}
-        
-      
+
+
         public function actionAjaxgetprizesavailable(){
             //Prize::model()->getPrizes()
         }
-        
+
 }

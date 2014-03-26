@@ -14,48 +14,23 @@ class UserEntryController extends Controller
 	public function filters()
 	{
 		return CMap::mergeArray(parent::filters(),array(
-		'accessControl', // perform access control for CRUD operations
-                    //array('auth.filters.AuthFilter'),
-                     array(
-                        'RestfullYii.filters.ERestFilter +
-                        REST.GET, REST.PUT, REST.POST, REST.DELETE'
-                    ),
+		//'accessControl', // perform access control for CRUD operations
+                array('auth.filters.AuthFilter'),
+
+
 		));
 	}
-        
-        
-        public function restEvents()
-        {
-            $this->onRest('req.cors.access.control.allow.origin', function() {
-                 return['*'];
-             });
-             $this->onRest('req.cors.access.control.allow.headers', function() {
-                return ['Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin'];
-            });
-            
-             $this->onRest('req.cors.access.control.allow.methods', function() {
-                 return['GET','POST'];
-             });
-             
-             
-         
-            $this->onRest('req.auth.ajax.user', function() {
-                return true;
-            });
-            $this->onRest('req.get.resources.render', function($param1)
-            {
-                echo CJSON::encode(['prizes'=>Prize::model()->getPrizes()]);
-            });
-        }
+
+
 
 
         public function actions()
         {
             return array(
-                'REST.'=>'ext.RestfullYii.starship.RestfullYii.actions.ERestActionProvider',
+
             );
         }
-        
+
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -64,10 +39,8 @@ class UserEntryController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
-             array('allow', 'actions'=>array('REST.GET', 'REST.PUT', 'REST.POST', 'REST.DELETE'),
-            'users'=>array('*'),
-            ),
+
+
 //            array('deny',  // deny all users
 //                'users'=>array('*'),
 //           ),

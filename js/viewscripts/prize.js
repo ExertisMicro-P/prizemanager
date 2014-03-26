@@ -3,7 +3,8 @@
  * and open the template in the editor.
  */
 var Prize = {
-    unavailable:['26-03-2014']
+//    unavailable:['26-03-2014']
+    unavailable:[]
 }
 
  $(function() {

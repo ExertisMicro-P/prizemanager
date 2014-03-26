@@ -19,7 +19,7 @@ class MPEnvironments {
 
 
             'mb002095.micro-p.com'=>array(
-                        'dbhost'=>'localhost',
+                        'dbhost'=>'mb002462.micro-p.com',
                         'dbname'=>'yii-prizemanager',
                         'dbuser'=>'russellh',
                         'dbpassword'=>'sl58jySL%*JY',

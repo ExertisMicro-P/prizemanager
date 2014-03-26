@@ -33,6 +33,8 @@ $config_array = array(
                 'bootstrap.behaviors.*',
                 'application.modules.user.models.*', // for https://github.com/mishamx/yii-user
                 'application.modules.user.components.*',
+                'application.modules.auth.components.*',
+            'application.modules.auth.*',
 	),
 
 	'modules'=>array(
@@ -110,6 +112,7 @@ $config_array = array(
 	'components'=>array(
             /*
 		'user'=>array(
+			'class' => 'auth.components.AuthWebUser',
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
@@ -132,7 +135,7 @@ $config_array = array(
 		'urlManager'=>array(
 
 			'urlFormat'=>'path',
-			'caseSensitive'=>false,
+			//caseSensitive'=>false,
 			'rules'=>/*array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
@@ -194,14 +197,14 @@ array(
 				 	'connectionID' => 'db',
 					'filter'=>'CLogFilter',
                                 ),
-								
+
 				array(
                     'class'=>'CEmailLogRoute',
                     'levels'=>'error',
                     'emails'=>array('russell.hutson@exertismicro-p.co.uk'),
                                         'sentFrom'=>'prizemanager@exertismicro-p.co.uk'
                 ),
-                                
+
 
 				// uncomment the following to show log messages on web pages
 				/*
@@ -215,14 +218,13 @@ array(
             'authManager' => array(
                 //'class' => 'auth.components.CachedDbAuthManager',
                 //'cachingDuration' => 3600,
-                
+
                 'class'=>'CDbAuthManager',
                 'connectionID'=>'db',
 
                 'behaviors' => array(
                   'auth' => array(
                     'class' => 'auth.components.AuthBehavior',
-
                   ),
                 ),
               ),

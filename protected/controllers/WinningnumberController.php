@@ -14,12 +14,13 @@ class WinningNumberController extends Controller
 	public function filters()
 	{
 		return CMap::mergeArray(parent::filters(),array(
-		'accessControl', // perform access control for CRUD operations
-                    //array('auth.filters.AuthFilter'),
+		//'accessControl', // perform access control for CRUD operations
+
                      array(
                         'RestfullYii.filters.ERestFilter +
                         REST.GET, REST.PUT, REST.POST, REST.DELETE'
                     ),
+                    array('auth.filters.AuthFilter - REST.GET, REST.PUT, REST.POST, REST.DELETE'),
 		));
 	}
 
@@ -31,44 +32,45 @@ class WinningNumberController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
+
              array('allow', 'actions'=>array('REST.GET', 'REST.PUT', 'REST.POST', 'REST.DELETE'),
             'users'=>array('*'),
             ),
                     );
 	}
-        
+
         public function actions()
         {
             return array(
-                'REST.'=>'ext.RestfullYii.starship.RestfullYii.actions.ERestActionProvider',
+                'REST.'=>'RestfullYii.actions.ERestActionProvider',
             );
         }
-        
+
          public function restEvents()
         {
              $this->onRest('req.cors.access.control.allow.origin', function() {
                  return['*'];
              });
-             
+
              $this->onRest('req.cors.access.control.allow.methods', function() {
                  return['GET','POST'];
              });
-             
-             
+
+
             $this->onRest('req.auth.ajax.user', function() {
                 return true;
             });
-           
+
             $this->onRest('req.post.ticket.render', function($data, $param1) {
                 //$data is the data sent in the POST
-                
+				header('Access-Control-Allow-Origin: *');
+
                 $status = WinningNumber::model()->isThisaGoldenTicketWinner($param1);
-                
+
                 echo CJSON::encode(['status'=>$status]);
             });
-            
-        
+
+
         }
 
 	/**
@@ -80,10 +82,10 @@ class WinningNumberController extends Controller
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
-            
+
 	}
 
-        
+
         public function actionAjaxchecknumberisvalid(){
              $status = 'available';
              if(isset($_POST['number'])){
@@ -96,7 +98,7 @@ class WinningNumberController extends Controller
                  if(!UserEntry::model()->findByAttributes(array('invoice_no'=>$number)) == null){
                   echo  CJSON::encode(['status'=>'used']);
                   return;
-                } 
+                }
                 echo  CJSON::encode(['status'=>'valid']);
              }
         }
@@ -111,8 +113,8 @@ class WinningNumberController extends Controller
                 $prize = Prize::model()->findByAttributes(array('offer_date'=>$today));
                 $data = '';
                 $entries = 0;
-                
-                
+
+
                 $todays_winners=new CActiveDataProvider('WinningNumber', array(
                     'criteria'=>array(
                     'condition'=>"prize_id=".$prize->id,
@@ -121,14 +123,14 @@ class WinningNumberController extends Controller
                     'pageSize'=>10,
                     ),
                 ));
-                
-               
+
+
                 //a quick validation to ensure entries not required.
                 //$todays_winners = WinningNumber::model()->findByAttributes(array('prize_id'=>$prize->id));
                 if($todays_winners){ //previous entries find out how many
                     $entries = WinningNumber::model()->countByAttributes(array('prize_id'=>$prize->id));
                 }
-		
+
 		if (isset($_POST['WinningNumber'])) {
                         $invoices = $_POST['WinningNumber'];
                         $error=array();
@@ -140,13 +142,13 @@ class WinningNumberController extends Controller
                                 if (!$model->saveWithAuditTrail('invoice '. $invoice['invoice_no'] . 'created')){
                                     Yii::log(__METHOD__.': Error saving winningnumber='.print_r($winningnumber,true),'info','system.controllers.WinningNumber');
                                     $error[] = $invoice['invoice_no'];
-                                }  
+                                }
                             }
                         }
 			if(empty($error)){
                             $this->redirect(array('admin'));
                         }
-                        
+
 			//if ($model->save()) {
 			//	$this->redirect(array('view','id'=>$model->id));
 			//}
