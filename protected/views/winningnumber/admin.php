@@ -29,7 +29,9 @@ $('.search-form form').submit(function(){
 ?>
 
 <h1>Manage Winning Numbers</h1>
-
+<?php if(!$prize){ ?>
+    <h3>There are no active prizes for today</h3>
+<?php } ?>
 <p>Numbers which correspond to a prize. </p>
 <p>If a participant enters one of these number they win the corresponding prize.
 </p>

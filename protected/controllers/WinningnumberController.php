@@ -275,7 +275,7 @@ class WinningNumberController extends Controller
 		}
 
 		$this->render('admin',array(
-			'model'=>$model,
+			'model'=>$model,'prize'=>$prize
 		));
             
  	}
