@@ -58,21 +58,3 @@ $('.search-form form').submit(function(){
 	),
 )); ?>
 
-<script>
-     $.ajax({
-        url: 'ajaxgetprizesavailable',
-        type: 'GET',
-        data: {
-        },
-        success : function(data){
-             $.each(data, function(key,value) {
-                console.log(value.desc);
-             });
-        },
-        error: function(){
-            alert('ouch!');
-        } 
-        
-    });
-
-</script>
