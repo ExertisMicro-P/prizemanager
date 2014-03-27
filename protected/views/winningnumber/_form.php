@@ -15,7 +15,7 @@
 	'enableAjaxValidation'=>false,
 )); ?>
     <?php $qty = $prize->qty - $entries ?>
-    <?php echo $form->errorSummary($model); ?>
+    <div class='submiterrors'></div>
     <?php if($qty >0){ ?>
         <div class="control-group">
                 <?php for($i=1; $i < $qty+1; $i++){
@@ -31,6 +31,7 @@
             <?php echo TbHtml::submitButton('Create',array(
                         'color'=>TbHtml::BUTTON_COLOR_PRIMARY,
                         'size'=>TbHtml::BUTTON_SIZE_LARGE,
+                        'id'=>'create',
                     )); ?>
         </div>
          <?php }  // if qty > 0 ?>

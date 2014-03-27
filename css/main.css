@@ -231,3 +231,20 @@ div.search-form
 div#ui-datepicker-div.ui-datepicker{
     background-color: #eee;
 }
+
+.submiterrors {
+    color:red;
+    padding:5px;
+    border: solid red thin;
+    display:none;
+    width:50%;
+}
+
+div.form span.error.invalid {
+    color:red;
+    padding-left:5px;
+}
+div.form span.error.valid {
+    color:green;
+     padding-left:5px;
+}
