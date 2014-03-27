@@ -260,9 +260,10 @@ class WinningNumberController extends Controller
                     $entries = WinningNumber::model()->countByAttributes(array('prize_id'=>$prize->id));
                 }
                 if($entries < $prize->qty){
-                    $this->render('create',array(
-			'model'=>$win_model, 'prize'=>$prize, 'todays_winners'=>$todays_winners, 'entries'=>$entries
-                    ));
+                    $this->redirect(array('create'));
+                    //$this->render('create',array(
+		//	'model'=>$win_model, 'prize'=>$prize, 'todays_winners'=>$todays_winners, 'entries'=>$entries
+                    //));
                 }
                 else{
                     $model=new WinningNumber('search');
