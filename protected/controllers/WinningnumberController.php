@@ -227,6 +227,7 @@ class WinningNumberController extends Controller
         
         public function actionList(){
                  
+                $prize = null;
                 $model=new WinningNumber('search');
                     $model->unsetAttributes();  // clear any default values
 		if (isset($_GET['WinningNumber'])) {
@@ -234,7 +235,7 @@ class WinningNumberController extends Controller
 		}
 
 		$this->render('admin',array(
-			'model'=>$model,
+			'model'=>$model,'prize'=>$prize
 		));
         }
 
