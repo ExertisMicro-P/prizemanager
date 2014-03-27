@@ -122,25 +122,26 @@ class WinningNumberController extends Controller
 		$model=new WinningNumber;
                 $today = date('Y-m-d');
                 $prize = Prize::model()->findByAttributes(array('offer_date'=>$today));
-                $data = '';
+                $todays_winners = '';
                 $entries = 0;
-                
-                $todays_winners=new CActiveDataProvider('WinningNumber', array(
-                    'criteria'=>array(
-                    'condition'=>"prize_id=".$prize->id,
-                    ),
-                    'pagination'=>array(
-                    'pageSize'=>10,
-                    ),
-                ));
+                if($prize){
+                    $data = '';            
+                    $todays_winners=new CActiveDataProvider('WinningNumber', array(
+                        'criteria'=>array(
+                        'condition'=>"prize_id=".$prize->id,
+                        ),
+                        'pagination'=>array(
+                        'pageSize'=>10,
+                        ),
+                    ));
                 
                
-                //a quick validation to ensure entries not required.
-                if($todays_winners){ //previous entries find out how many
-                    $entries = WinningNumber::model()->countByAttributes(array('prize_id'=>$prize->id));
-                }
+                    //a quick validation to ensure entries not required.
+                    if($todays_winners){ //previous entries find out how many
+                        $entries = WinningNumber::model()->countByAttributes(array('prize_id'=>$prize->id));
+                    }
 		
-		if (isset($_POST['WinningNumber'])) {
+                    if (isset($_POST['WinningNumber'])) {
                         $invoices = $_POST['WinningNumber'];
                         $error=array();
                         foreach($invoices as $invoice){
@@ -161,8 +162,8 @@ class WinningNumberController extends Controller
 			//if ($model->save()) {
 			//	$this->redirect(array('view','id'=>$model->id));
 			//}
-		}
-
+                   }
+                }//if prize
 		$this->render('create',array(
 			'model'=>$model, 'prize'=>$prize, 'todays_winners'=>$todays_winners, 'entries'=>$entries
 		));
@@ -245,8 +246,10 @@ class WinningNumberController extends Controller
 	{
             $win_model=new WinningNumber;
             $today = date('Y-m-d');
-            $prize = Prize::model()->findByAttributes(array('offer_date'=>$today));
             $entries = 0;
+            $prize = Prize::model()->findByAttributes(array('offer_date'=>$today));
+            if($prize){
+            
                 $todays_winners=new CActiveDataProvider('WinningNumber', array(
                     'criteria'=>array(
                     'condition'=>"prize_id=".$prize->id,
@@ -261,11 +264,10 @@ class WinningNumberController extends Controller
                 }
                 if($entries < $prize->qty){
                     $this->redirect(array('create'));
-                    //$this->render('create',array(
-		//	'model'=>$win_model, 'prize'=>$prize, 'todays_winners'=>$todays_winners, 'entries'=>$entries
-                    //));
+ 
                 }
-                else{
+            }//if prize
+                
                     $model=new WinningNumber('search');
                     $model->unsetAttributes();  // clear any default values
 		if (isset($_GET['WinningNumber'])) {
@@ -275,14 +277,8 @@ class WinningNumberController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
-                }
             
-                
-            
-            
-            
-		
-	}
+ 	}
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

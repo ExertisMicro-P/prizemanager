@@ -22,7 +22,14 @@ $this->menu=array(
 
 <h1>Create Winning Numbers </h1>
 
+
+<?php if($prize){ ?>
 <h3> Prize on offer for today is <?php echo $prize->desc ?> </h3>
 <p> Number of prizes on offer is <?php echo $prize->qty ?> </p>
 <p> Number of invoice number entered so far for this prize <?php echo $entries ?>
-<?php $this->renderPartial('_form', array('model'=>$model, 'prize'=>$prize, 'entries'=>$entries, 'todays_winners'=>$todays_winners)); ?>
+<?php   $this->renderPartial('_form', array('model'=>$model, 'prize'=>$prize, 'entries'=>$entries, 'todays_winners'=>$todays_winners));
+} 
+else{ ?>
+    <h3> Sorry there are no prizes marked to be active today</h3>
+<?php }
+?>
