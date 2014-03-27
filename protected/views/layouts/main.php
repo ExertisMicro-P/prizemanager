@@ -47,12 +47,12 @@
         array(
             'class' => 'bootstrap.widgets.TbNav',
             'items' => array(
-                array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-				array('label'=>'Contact', 'url'=>array('/site/contact')),
-                                array('label'=>'Manage Winning Numbers', 'url'=>array('/winningnumber/admin')),
-                                array('label'=>'Users Entries', 'url'=>array('/userentry/admin')),
-                                array('label'=>'Manage Prizes', 'url'=>array('/prize/admin')),
+                //array('label'=>'Home', 'url'=>array('/site/index')),
+				//array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+				//array('label'=>'Contact', 'url'=>array('/site/contact')),
+                                array('label'=>'Manage Winning Numbers', 'url'=>array('/winningnumber/admin'), 'visible'=>Yii::app()->user->checkAccess('menu.winningnumber')),
+                                array('label'=>'Users Entries', 'url'=>array('/userentry/admin'), 'visible'=>Yii::app()->user->checkAccess('menu.userentry')),
+                                array('label'=>'Manage Prizes', 'url'=>array('/prize/admin'), 'visible'=>Yii::app()->user->checkAccess('menu.prize')),
 				array('label'=>'Permissions', 'url'=>array('/auth'), 'visible'=>Yii::app()->user->isAdmin),
 				array('label'=>'Users', 'url'=>array('/user'), 'visible'=>Yii::app()->user->isAdmin),
 				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),

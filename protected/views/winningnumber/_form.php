@@ -49,8 +49,8 @@
                                 'columns'=>array(
                                        'invoice_no',	
                                     ),
-				'emptyText' => 'No winning numbers entered'
-		 
+				'emptyText' => 'No Invoice Numbers Entered!'
+
 		));
     ?>
     

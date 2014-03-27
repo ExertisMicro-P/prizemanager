@@ -5,7 +5,8 @@ $this->breadcrumbs=array(
 );
 $this->layout='//layouts/column2';
 $this->menu=array(
-    array('label'=>UserModule::t('List User'), 'url'=>array('index')),
+    array('label'=>UserModule::t('List Users'), 'url'=>array('index')),
+    array('label'=>UserModule::t('View User Profile'), 'url'=>array('/user/profile', array('id'=>$model->id))),
 );
 ?>
 <h1><?php echo UserModule::t('View User').' "'.$model->username.'"'; ?></h1>

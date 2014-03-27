@@ -129,6 +129,8 @@ define('DBNAME', $curEnvironment['dbname']) ;
 define('DBUSER', $curEnvironment['dbuser']) ;
 define('DBPASS', $curEnvironment['dbpassword']) ;
 
+//die(print_r($curEnvironment ,true));
+
 $yii    = $curEnvironment['yii'] ;
 
 // Controls debug.

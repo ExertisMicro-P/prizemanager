@@ -17,12 +17,14 @@ class PrizeController extends Controller
 	public function filters()
 	{
 		return CMap::mergeArray(parent::filters(),array(
-		'accessControl', // perform access control for CRUD operations
+		//'accessControl', // perform access control for CRUD operations
                     //array('auth.filters.AuthFilter'),
                      array(
                         'RestfullYii.filters.ERestFilter +
                         REST.GET, REST.PUT, REST.POST, REST.DELETE'
                     ),
+                    array('auth.filters.AuthFilter  -
+                        REST.GET, REST.PUT, REST.POST, REST.DELETE'),
 		));
 	}
         
@@ -40,13 +42,31 @@ class PrizeController extends Controller
                  return['GET','POST'];
              });
              
-             
+             $this->onRest('pre.filter.req.auth.cors', function($allowed_origins) {
+                    return $allowed_origins; //Array
+                });
          
             $this->onRest('req.auth.ajax.user', function() {
                 return true;
             });
+              $this->onRest('req.auth.cors', function() {
+                return true;
+            });
             $this->onRest('req.get.resources.render', function($param1)
             {
+               if (isset($_SERVER['HTTP_REFERER'])) {
+                $http_referer = parse_url($_SERVER['HTTP_REFERER']);
+                $domain = $http_referer['host'];
+
+                    $http_origin = $domain;
+                    if ($http_origin == "icom.sandbox.websys.co.uk" || $http_origin == "www.exertismicro-p.co.uk")
+                {
+                       header('Access-Control-Allow-Origin: '.$http_referrer['scheme'].$http_referrer['host']);
+                    }
+                } else {
+                    header('Access-Control-Allow-Origin: *');
+                }
+                //header('Content-Type: application/json');
                 echo CJSON::encode(['prizes'=>Prize::model()->getPrizes()]);
             });
         }
@@ -55,7 +75,7 @@ class PrizeController extends Controller
         public function actions()
         {
             return array(
-                'REST.'=>'ext.RestfullYii.starship.RestfullYii.actions.ERestActionProvider',
+                'REST.'=>'RestfullYii.actions.ERestActionProvider',
             );
         }
         

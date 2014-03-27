@@ -33,6 +33,7 @@ $config_array = array(
                 'bootstrap.behaviors.*',
                 'application.modules.user.models.*', // for https://github.com/mishamx/yii-user
                 'application.modules.user.components.*',
+                'application.modules.auth.components.*',
 	),
 
 	'modules'=>array(
@@ -110,6 +111,7 @@ $config_array = array(
 	'components'=>array(
             /*
 		'user'=>array(
+			'class' => 'auth.components.AuthWebUser',
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
@@ -132,14 +134,43 @@ $config_array = array(
 		'urlManager'=>array(
 
 			'urlFormat'=>'path',
-			'caseSensitive'=>false,
-			'rules'=>/*array(
-				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+			//caseSensitive'=>false,
+			
+			'rules'=>array(
+				/*'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),*/
-                    require(
-                dirname(__FILE__).'/../extensions/RESTFullYii/starship/RestfullYii/config/routes.php'
+                //    require(
+                //dirname(__FILE__).'/../extensions/RESTFullYii/starship/RestfullYii/config/routes.php'
+					'api/<controller:\w+>'=>['<controller>/REST.GET', 'verb'=>'GET'],
+	'api/<controller:\w+>/<id:\w*>'=>['<controller>/REST.GET', 'verb'=>'GET'],
+	'api/<controller:\w+>/<id:\w*>/<param1:\w*>'=>['<controller>/REST.GET', 'verb'=>'GET'],
+	'api/<controller:\w+>/<id:\w*>/<param1:\w*>/<param2:\w*>'=>['<controller>/REST.GET', 'verb'=>'GET'],
+
+	['<controller>/REST.PUT', 'pattern'=>'api/<controller:\w+>/<id:\w*>', 'verb'=>'PUT'],
+	['<controller>/REST.PUT', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>', 'verb'=>'PUT'],
+	['<controller>/REST.PUT', 'pattern'=>'api/<controller:\w*>/<id:\w*>/<param1:\w*>/<param2:\w*>', 'verb'=>'PUT'],	
+
+	['<controller>/REST.DELETE', 'pattern'=>'api/<controller:\w+>/<id:\w*>', 'verb'=>'DELETE'],
+	['<controller>/REST.DELETE', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>', 'verb'=>'DELETE'],
+	['<controller>/REST.DELETE', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>/<param2:\w*>', 'verb'=>'DELETE'],
+
+	['<controller>/REST.POST', 'pattern'=>'api/<controller:\w+>', 'verb'=>'POST'],
+	['<controller>/REST.POST', 'pattern'=>'api/<controller:\w+>/<id:\w+>', 'verb'=>'POST'],
+	['<controller>/REST.POST', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>', 'verb'=>'POST'],
+	['<controller>/REST.POST', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>/<param2:\w*>', 'verb'=>'POST'],
+
+	['<controller>/REST.OPTIONS', 'pattern'=>'api/<controller:\w+>', 'verb'=>'OPTIONS'],
+	['<controller>/REST.OPTIONS', 'pattern'=>'api/<controller:\w+>/<id:\w+>', 'verb'=>'OPTIONS'],
+	['<controller>/REST.OPTIONS', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>', 'verb'=>'OPTIONS'],
+	['<controller>/REST.OPTIONS', 'pattern'=>'api/<controller:\w+>/<id:\w*>/<param1:\w*>/<param2:\w*>', 'verb'=>'OPTIONS'],
+
+	'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+	'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+	'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+	
+				'user/<controller:\w+>/<action:\w+>'=>'user/<controller>/<action>'
             ),
 		),
 

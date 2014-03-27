@@ -14,12 +14,13 @@ class WinningNumberController extends Controller
 	public function filters()
 	{
 		return CMap::mergeArray(parent::filters(),array(
-		'accessControl', // perform access control for CRUD operations
+		//'accessControl', // perform access control for CRUD operations
                     //array('auth.filters.AuthFilter'),
                      array(
                         'RestfullYii.filters.ERestFilter +
                         REST.GET, REST.PUT, REST.POST, REST.DELETE'
                     ),
+                    array('auth.filters.AuthFilter - REST.GET, REST.PUT, REST.POST, REST.DELETE'),
 		));
 	}
 
@@ -41,7 +42,7 @@ class WinningNumberController extends Controller
         public function actions()
         {
             return array(
-                'REST.'=>'ext.RestfullYii.starship.RestfullYii.actions.ERestActionProvider',
+                'REST.'=>'RestfullYii.actions.ERestActionProvider',
             );
         }
         
@@ -59,11 +60,12 @@ class WinningNumberController extends Controller
             $this->onRest('req.auth.ajax.user', function() {
                 return true;
             });
-           
+
             $this->onRest('req.get.ticket.render', function($param1) {
                 $status = WinningNumber::model()->isThisaGoldenTicketWinner($param1);
                 echo CJSON::encode(['status'=>$status]);
             });
+        
             
         //    $this->onRest('req.post.ticket.render', function($data, $param1) {
         //        //$data is the data sent in the POST

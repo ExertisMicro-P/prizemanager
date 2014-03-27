@@ -13,12 +13,8 @@ class UserController extends Controller
 	public function filters()
 	{
 		return CMap::mergeArray(parent::filters(),array(
-			//'accessControl', // perform access control for CRUD operations
-                    'auth.filters.AuthFilter',
-                     array(
-                        'RestfullYii.filters.ERestFilter +
-                        REST.GET, REST.PUT, REST.POST, REST.DELETE'
-                    ),
+			'accessControl', // perform access control for CRUD operations
+            
 		));
 	}
 	/**

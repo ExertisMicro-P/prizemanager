@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 var Prize = {
+
     unavailable: PrizeDates.unavailable //not the best way to do this. The value is brought through by the main form.
 }
 
