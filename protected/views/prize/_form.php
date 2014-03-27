@@ -2,6 +2,7 @@
 /* @var $this PrizeController */
 /* @var $model Prize */
 /* @var $form TbActiveForm */
+
 ?>
 
 <div class="form">
@@ -23,7 +24,7 @@
 
             <label class="control-label" for="offer_date">Date when offer becomes active</label>
             <?php //echo $form->dateField($model, 'offer_date', array('class'=>'date-picker')) ?>
-           <input name="start_date" id="start_date" class="date-picker" />
+           <input name="start_date" id="start_date" value="<?php echo $model->offer_date  ?>" class="date-picker" />
             <?php echo $form->hiddenField($model, 'offer_date',array('id' => 'offer_date')) ?>
 
             <?php echo $form->textFieldControlGroup($model,'qty',array('span'=>5)); ?>
@@ -40,7 +41,15 @@
     <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-<?php //create js unavailable dates
-    $str = 'Prize.unavailable = ';
+
+    <?php //create js unavailable dates
+    $str = '["';
+    $str .= implode('","', $dates);
+    $str .= '"]';
+    //add to object. These will get used by prize.js
    
+    echo '<script> var PrizeDates = {
+        unavailable: ' .$str . 
+        '}</script>'
+  
 ?>

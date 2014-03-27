@@ -20,7 +20,7 @@
         <div class="control-group">
                 <?php for($i=1; $i < $qty+1; $i++){
                     echo '<label class="control-label" for="invoice">Invoice ' . $i . '</label>';
-                    echo $form->textField($model,'['.$i.']invoice_no',array('size'=>80,'maxlength'=>8, 'class'=>'controls invoice-input' ,'data-id'=>$i)); 
+                    echo $form->textField($model,'['.$i.']invoice_no',array('size'=>80,'maxlength'=>8, 'class'=>'controls invoice-no' ,'data-id'=>$i)); 
                     echo '<span id="WinningNumber_' . $i . '_invoice_no_error" class="error"></span>';
                 }         
          ?>
@@ -49,7 +49,7 @@
                                 'columns'=>array(
                                        'invoice_no',	
                                     ),
-				'emptyText' => 'No Packs. Scan items on the left to add packs to this batch'
+				'emptyText' => 'No winning numbers entered'
 		 
 		));
     ?>

@@ -105,9 +105,16 @@ class PrizeController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
-                //get all dates so far used
-                $dates =Prize::model()->getUnavailableDates();
                 
+                $dates_arr =Prize::model()->getUnavailableDates();
+                
+                // pass string
+                $dates= array();
+                foreach($dates_arr as $key => $date ){
+                    //convert it to format calander is expecting
+                    $dates[] = date('d-m-Y', strtotime($date['offer_date']));   
+                }
+                //$dates->getData();
 		$this->render('create',array(
 			'model'=>$model,
                         'dates'=>$dates
@@ -133,8 +140,16 @@ class PrizeController extends Controller
 			}
 		}
 
+                $dates_arr =Prize::model()->getUnavailableDates();
+                
+                // pass string
+                $dates= array();
+                foreach($dates_arr as $key => $date ){
+                    //convert it to format calander is expecting
+                    $dates[] = date('d-m-Y', strtotime($date['offer_date']));   
+                }
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model,'dates'=>$dates
 		));
 	}
 
@@ -213,9 +228,5 @@ class PrizeController extends Controller
 		}
 	}
         
-      
-        public function actionAjaxgetprizesavailable(){
-            //Prize::model()->getPrizes()
-        }
         
 }

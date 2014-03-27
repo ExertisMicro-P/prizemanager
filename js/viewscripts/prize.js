@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 var Prize = {
-    unavailable:['26-03-2014']
+    unavailable: PrizeDates.unavailable //not the best way to do this. The value is brought through by the main form.
 }
 
  $(function() {

@@ -12,7 +12,6 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'List UserEntry', 'url'=>array('index')),
-	array('label'=>'Create UserEntry', 'url'=>array('create')),
 	array('label'=>'View UserEntry', 'url'=>array('view', 'id'=>$model->id)),
 	array('label'=>'Manage UserEntry', 'url'=>array('admin')),
 );

@@ -5,7 +5,7 @@
 
 
 var ajaxinprogress=false;
-$('.invoice-input').keyup(function(e){
+$('.invoice-no').keyup(function(e){
         
 	var number = $(this).val();
         
@@ -19,13 +19,17 @@ $('.invoice-input').keyup(function(e){
 });
 
 var form_errors = {};
-function doprocessnumber(number, obj){
+function doprocessnumber(number, id){
  	
 	if(!ajaxinprogress){
             ajaxinprogress = true;
-        
+            //create url - can't trust the one browser will create for it's rest like link
+            $loc = $(location).attr('href')
+            $root = $loc.split('/index.php/'); 
+            $controller = $root[1].split('/');
+            $url = $root[0] + '/index.php/' + $controller[0];
 	$.ajax({
-		  url: 'ajaxchecknumberisvalid',
+		  url: $url + '/ajaxchecknumberisvalid',
 		  context: document.body,
                   type: 'POST',
 		  data : {
@@ -43,9 +47,9 @@ function doprocessnumber(number, obj){
 					  stockcheck.showerrors(obj.errors);
                                        
 				  }
-                                  if(data.status == 'used'){
-                                       $('#winning_number_1_invoice_no_error').html('done');
-                                      $('#'+id + '_error').html(' This number has already been used please choose another');
+                                  if(data.status != 'available'){
+                                      
+                                      $('#'+id + '_error').html(data.status);
                                   }
 		  }},
 		  complete: function() {ajaxinprogress=false;},

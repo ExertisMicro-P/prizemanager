@@ -65,7 +65,7 @@ class Prize extends MPActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'desc' => 'Desc',
+			'desc' => 'Description',
 			'offer_date' => 'Offer Date',
 			'qty' => 'Qty',
 			'timestamp' => 'Timestamp',
@@ -142,10 +142,19 @@ class Prize extends MPActiveRecord
              return $dataProvider;
         }
         
+        
+        /*
+         * Get all offer_dates recorded in prize_t and returns them as an array
+         */
         public function getUnavailableDates(){
-            $dataProvider = Yii::app()->db->createCommand()
+            
+            $rawData = Yii::app()->db->createCommand()
   			->select("offer_date")
-  			->from($this->tableName());
-            return $dataProvider;
+  			->from($this->tableName())
+                        ->queryAll();
+            
+            $dataprovider = new CArrayDataProvider($rawData,array('pagination'=>false));
+            return $dataprovider->getData();
+        
         }
 }

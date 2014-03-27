@@ -9,7 +9,6 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Create UserEntry','url'=>array('create')),
 	array('label'=>'Manage UserEntry','url'=>array('admin')),
 );
 ?>

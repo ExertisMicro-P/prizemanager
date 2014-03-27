@@ -1,6 +1,10 @@
 <?php
 /* @var $this PrizeController */
 /* @var $model Prize */
+        $baseUrl = Yii::app()->baseUrl;
+  	$cs = Yii::app()->getClientScript();
+        Yii::app()->clientScript->registerCoreScript('jquery.ui');
+        $cs->registerScriptFile($baseUrl.'/js/viewscripts/prize.js',CClientScript::POS_END);
 ?>
 
 <?php
@@ -19,5 +23,5 @@ $this->menu=array(
 ?>
 
     <h1>Update Prize <?php echo $model->id; ?></h1>
-
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+    
+<?php $this->renderPartial('_form', array('model'=>$model,'dates'=>$dates)); ?>

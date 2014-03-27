@@ -1,6 +1,10 @@
 <?php
 /* @var $this WinningNumberController */
 /* @var $model WinningNumber */
+     $baseUrl = Yii::app()->baseUrl;
+  	$cs = Yii::app()->getClientScript();
+        $cs->registerScriptFile($baseUrl.'/js/viewscripts/winningnumber.js',CClientScript::POS_END);
+        
 ?>
 
 <?php
@@ -14,10 +18,17 @@ $this->menu=array(
 	array('label'=>'List WinningNumber', 'url'=>array('index')),
 	array('label'=>'Create WinningNumber', 'url'=>array('create')),
 	array('label'=>'View WinningNumber', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage WinningNumber', 'url'=>array('admin')),
+        array('label'=>'Manager WinningNumber', 'url'=>array('list')),
 );
 ?>
 
-    <h1>Update WinningNumber <?php echo $model->id; ?></h1>
-
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php //can't update this if someone has claimed the prize
+        if($model->claimed == WinningNumber::CLAIMED){
+            echo '<h2 class="error" >Sorry this prize has been claimed and can not be updated</h2>'; 
+            $this->renderPartial('_updateview', array('model'=>$model));
+        }else{ ?>
+            <h1>Update winning number for prize : <?php echo $prize->desc?></h1>
+          
+        <?php  $this->renderPartial('_updateform', array('model'=>$model));
+        }
+?>

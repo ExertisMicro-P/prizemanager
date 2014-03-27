@@ -60,13 +60,18 @@ class WinningNumberController extends Controller
                 return true;
             });
            
-            $this->onRest('req.post.ticket.render', function($data, $param1) {
-                //$data is the data sent in the POST
-                
+            $this->onRest('req.get.ticket.render', function($param1) {
                 $status = WinningNumber::model()->isThisaGoldenTicketWinner($param1);
-                
                 echo CJSON::encode(['status'=>$status]);
             });
+            
+        //    $this->onRest('req.post.ticket.render', function($data, $param1) {
+        //        //$data is the data sent in the POST
+                
+        //        $status = WinningNumber::model()->isThisaGoldenTicketWinner($param1);
+                
+        //        echo CJSON::encode(['status'=>$status]);
+        //    });
             
         
         }
@@ -84,17 +89,23 @@ class WinningNumberController extends Controller
 	}
 
         
+        
+        /*
+         * Checks that the number being entered is not either an existing winning number or a number previously
+         * entered by a user.
+         * Echos / returns a json array.
+         */
         public function actionAjaxchecknumberisvalid(){
              $status = 'available';
              if(isset($_POST['number'])){
                 $number = $_POST['number'];
                 if(!WinningNumber::model()->findByAttributes(array('invoice_no'=>$number))==null){
                 //we have entered this number as a winner already. So can't be used
-                   echo CJSON::encode(['status'=>'used']);
+                   echo CJSON::encode(['status'=>'Already a winning number. Please enter a different one']);
                    return;
                 }
                  if(!UserEntry::model()->findByAttributes(array('invoice_no'=>$number)) == null){
-                  echo  CJSON::encode(['status'=>'used']);
+                  echo  CJSON::encode(['status'=>'Already entered by user. Please enter a different one']);
                   return;
                 } 
                 echo  CJSON::encode(['status'=>'valid']);
@@ -112,7 +123,6 @@ class WinningNumberController extends Controller
                 $data = '';
                 $entries = 0;
                 
-                
                 $todays_winners=new CActiveDataProvider('WinningNumber', array(
                     'criteria'=>array(
                     'condition'=>"prize_id=".$prize->id,
@@ -124,7 +134,6 @@ class WinningNumberController extends Controller
                 
                
                 //a quick validation to ensure entries not required.
-                //$todays_winners = WinningNumber::model()->findByAttributes(array('prize_id'=>$prize->id));
                 if($todays_winners){ //previous entries find out how many
                     $entries = WinningNumber::model()->countByAttributes(array('prize_id'=>$prize->id));
                 }
@@ -164,21 +173,21 @@ class WinningNumberController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if (isset($_POST['WinningNumber'])) {
+                $model=$this->loadModel($id);
+                $prize = Prize::model()->findByAttributes(array('id'=>$model->prize_id));
+                  
+                    if (isset($_POST['WinningNumber'])) {
 			$model->attributes=$_POST['WinningNumber'];
 			if ($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
 			}
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
+                    }
+                   
+                
+                    $this->render('update',array(
+			'model'=>$model,'prize'=>$prize
+                    ));
+                
 	}
 
 	/**
@@ -206,19 +215,17 @@ class WinningNumberController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('WinningNumber');
+            $dataProvider=new CActiveDataProvider('WinningNumber');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
+                
 	}
-
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new WinningNumber('search');
-		$model->unsetAttributes();  // clear any default values
+        
+        public function actionList(){
+                 
+                $model=new WinningNumber('search');
+                    $model->unsetAttributes();  // clear any default values
 		if (isset($_GET['WinningNumber'])) {
 			$model->attributes=$_GET['WinningNumber'];
 		}
@@ -226,6 +233,52 @@ class WinningNumberController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+        }
+
+	/**
+	 * Checks to see if winning number need to be added for that day.
+         * If they do directs user to the create view. Otherwise directs user to the list of entries
+	 */
+	public function actionAdmin()
+	{
+            $win_model=new WinningNumber;
+            $today = date('Y-m-d');
+            $prize = Prize::model()->findByAttributes(array('offer_date'=>$today));
+            $entries = 0;
+                $todays_winners=new CActiveDataProvider('WinningNumber', array(
+                    'criteria'=>array(
+                    'condition'=>"prize_id=".$prize->id,
+                    ),
+                    'pagination'=>array(
+                    'pageSize'=>10,
+                    ),
+                ));            
+                //a quick validation to ensure entries not required.
+                if($todays_winners){ //previous entries find out how many
+                    $entries = WinningNumber::model()->countByAttributes(array('prize_id'=>$prize->id));
+                }
+                if($entries < $prize->qty){
+                    $this->render('create',array(
+			'model'=>$win_model, 'prize'=>$prize, 'todays_winners'=>$todays_winners, 'entries'=>$entries
+                    ));
+                }
+                else{
+                    $model=new WinningNumber('search');
+                    $model->unsetAttributes();  // clear any default values
+		if (isset($_GET['WinningNumber'])) {
+			$model->attributes=$_GET['WinningNumber'];
+		}
+
+		$this->render('admin',array(
+			'model'=>$model,
+		));
+                }
+            
+                
+            
+            
+            
+		
 	}
 
 	/**

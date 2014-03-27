@@ -15,7 +15,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'List WinningNumber', 'url'=>array('index')),
-	array('label'=>'Manage WinningNumber', 'url'=>array('admin')),
+	array('label'=>'Create WinningNumber', 'url'=>array('create')),
+        array('label'=>'Manager WinningNumber', 'url'=>array('list')),
 );
 ?>
 
