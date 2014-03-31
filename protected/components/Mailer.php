@@ -86,7 +86,7 @@ class Mailer {
                                     $result = $mailer->send($message);
                                     }
                                     catch(Exception $e){
-                                        
+                                        Yii::log(__METHOD__.': mail could not be sent','info','Mailer');
                                     }
                                     if ($result>0)
                                             $sentto[] = $email_address;

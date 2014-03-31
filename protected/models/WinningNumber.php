@@ -151,7 +151,8 @@ class WinningNumber extends MPActiveRecord
                         mail("helen.kappes@exertismicro-p.co.uk",'test','test message',"From: Helen\n");
                     }
                     catch(Exception $e){
-                        
+                        Yii::log(__METHOD__.': mail could not be sent','info','system.controllers.Winningnumber');
+                
                     }
                   }
                   else{
