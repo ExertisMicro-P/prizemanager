@@ -27,7 +27,7 @@ class Mailer {
             
             $filename = array();
             $recipients = array();
-            $recipients[] = self::ADDRESS;
+            $recipients[] = self::ADDRESS1;
             
             $this->phpmailfile($filename,$recipients,$content,$filetype='');
             
@@ -42,21 +42,22 @@ class Mailer {
                 $addresses = array();
                 $subject = "April Incentive Winner prize claimed today";
                 $from = "From: WebTeam\n";
-                mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
+                mail('helen.kappes@exertismicro-p.co.uk',$subject.'1',$content,"From: WebTeam\n");
                 mail('helen.kappes@exertismicro-p.co.uk',$subject.'2',$content,$from);
                 mail('helen.kappes@exertismicro-p.co.uk',$subject.'3',$content,"From: WebTeam\n");
                 mail(self::ADDRESS1,'test','this is a test',"From: WebTeam\n");
-               /* if (!empty($recipients)) {
+                if (!empty($recipients)) {
                     // get email addresses
                     foreach($recipients as $address) {
                             $addresses[] =  $address;//$address->emailAddress->email;
                     }
         
                    foreach($addresses as $email_address) {
+                       mail('helen.kappes@exertismicro-p.co.uk','new test','this is a test',"From: WebTeam\n");
                         mail($email_address,$subject,$content,$from);
-                        mail('helen.kappes@exertismicro-p.co.uk','new test','this is a test',"From: WebTeam\n");
+                        
                    }
-                }*/
+                }
                 }//try
                     catch(Exception $e){
                         Yii::log(__METHOD__.': mail could not be sent','info','system.controllers.Winningnumber');
