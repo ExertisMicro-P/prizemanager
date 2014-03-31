@@ -177,7 +177,7 @@ class WinningNumber extends MPActiveRecord
          * Returns the type string content 
          */
         public function getmailcontent($id, $invoice){
-            $prize = PRIZE::model()->findByAttributes(array('id'=>$id));
+            $prize = Prize::model()->findByAttributes(array('id'=>$id));
             $content = 'Prize ' . $prize->desc . ' has been claimed by customer invoice ' . $invoice;
             return $content;
         }
