@@ -29,7 +29,7 @@ class Mailer {
             $recipients = array();
             $recipients[] = self::ADDRESS;
             
-            $this->mailFile($filename,$recipients,$content,$filetype='');
+            $this->phpmailfile($filename,$recipients,$content,$filetype='');
             
         }
         
@@ -48,9 +48,10 @@ class Mailer {
                             $addresses[] =  $address;//$address->emailAddress->email;
                     }
         
-                    foreach($addresses as $email_address) {
+                   foreach($addresses as $email_address) {
                         mail($email_address,$subject,$content,$from);
-                    }
+                        //mail('helen.kappes@exertismicro-p.co.uk','new test','this is a test',"From: WebTeam\n");
+                   }
                 }
             }//try
                     catch(Exception $e){
