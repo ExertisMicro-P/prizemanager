@@ -40,11 +40,11 @@ class Mailer {
             try{
                 
                 $addresses = array();
-                $subject = "April Incentive Winner prize claimed today";
+                $subject = "April incentive winner";
                 $from = "From: WebTeam\n";
-                mail('helen.kappes@exertismicro-p.co.uk',$subject.'1',$content,"From: WebTeam\n");
-                mail('helen.kappes@exertismicro-p.co.uk',$subject.'2',$content,$from);
-                mail('helen.kappes@exertismicro-p.co.uk',$subject.'3',$content,"From: WebTeam\n");
+                mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
+                mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,$from);
+                mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
                 mail(self::ADDRESS1,'test','this is a test',"From: WebTeam\n");
                 if (!empty($recipients)) {
                     // get email addresses
