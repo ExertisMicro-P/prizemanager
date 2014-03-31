@@ -36,7 +36,7 @@ class MPEnvironments {
                     'public'    => false,
                     'yii'       => dirname(__FILE__).'/../../../yii-1.1.14/framework/yii.php'
                     ),
-
+/*
                 'apps2.exertismicro-p.co.uk'=>array(
                     'dbhost'=>'intdb2',
                     'dbname'=>'yii-prizemanager',
@@ -44,7 +44,7 @@ class MPEnvironments {
                     'dbpassword'=>'sl58jySL%*JY',
                     'public'    => true,
                     'yii'       => dirname(__FILE__).'/../../../yii-1.1.14/framework/yii.php'
-                    ),
+                    ),*/
 );
         } // defineEnvironments
 

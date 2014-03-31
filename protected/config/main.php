@@ -123,6 +123,9 @@ $config_array = array(
                     'class' => 'bootstrap.components.TbApi',
                 ),
 
+            'swiftMailer' => array(
+            'class' => 'ext.swiftMailer.SwiftMailer',
+        ),
 		/*'input'=>array(
 				'class'         => 'CmsInput',
 				'cleanPost'     => true,

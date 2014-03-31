@@ -143,7 +143,10 @@ class WinningNumber extends MPActiveRecord
                     $winningnumber->claimed = self::CLAIMED;
                     if (!$winningnumber->saveWithAuditTrail('invoice '. $invoice . ' claimed'))
     			Yii::log(__METHOD__.': Error saving winningnumber='.print_r($winningnumber,true),'info','system.controllers.WinningNumber');
-                    $status =  self::STATUS_WIN;           
+                    $status =  self::STATUS_WIN; 
+                    $mailer = new Mailer();
+                    $content = $this->getmailcontent($winningnumber->prize_id,$invoice);
+                    $mailer->mailNotification($content);
                   }
                   else{
                         ( $status = self::STATUS_CLAIMED);
@@ -167,5 +170,15 @@ class WinningNumber extends MPActiveRecord
                 $status = self::STATUS_INVALID;
                 return $status;
             }
+        }
+        
+        /*
+         * Creates an email content specifying - the prize, and winning invoice number
+         * Returns the type string content 
+         */
+        public function getmailcontent($id, $invoice){
+            $prize = PRIZE::model()->findByAttributes(array('id'=>$id));
+            $content = 'Prize ' . $prize->desc . ' has been claimed by customer invoice ' . $invoice;
+            return $content;
         }
 }
