@@ -19,7 +19,7 @@ class Mailer {
 	 * @param array $recipients Array of CActiveRecord objects
 	 */
     
-        const ADDRESS = 'helen.kappes@exertismicro-p.co.uk';
+        const ADDRESS1 = 'helen.kappes@exertismicro-p.co.uk';
         const RECIPIENT = 'Helen Kappes';
         
         
@@ -42,9 +42,10 @@ class Mailer {
                 $addresses = array();
                 $subject = "April Incentive Winner prize claimed today";
                 $from = "From: WebTeam\n";
-                mail('helen.kappes@exertismicro-p.co.uk','new test','this is a test',"From: WebTeam\n");
-                mail('helen.kappes@exertismicro-p.co.uk','new test1',$content,"From: WebTeam\n");
-                mail(self::ADDRESS,$subject,$content,$from);
+                mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
+                mail('helen.kappes@exertismicro-p.co.uk',$subject.'2',$content,$from);
+                mail('helen.kappes@exertismicro-p.co.uk',$subject.'3',$content,"From: WebTeam\n");
+                mail(self::ADDRESS1,'test','this is a test',"From: WebTeam\n");
                /* if (!empty($recipients)) {
                     // get email addresses
                     foreach($recipients as $address) {
