@@ -33,7 +33,39 @@ class Mailer {
             
         }
         
-	private function mailFile($filename,array $recipients,$content, $filetype='')
+        /*
+         * Mail file content to specified recipients
+         */
+        private function phpmailfile($filename,array $recipients,$content, $filetype=''){
+            try{
+                
+                $addresses = array();
+                $subject = "April Incentive Winner prize claimed today";
+                $from = "From: WebTeam\n";
+                if (!empty($recipients)) {
+                    // get email addresses
+                    foreach($recipients as $address) {
+                            $addresses[] =  $address;//$address->emailAddress->email;
+                    }
+        
+                    foreach($addresses as $email_address) {
+                        mail($email_address,$subject,$content,$from);
+                    }
+                }
+            }//try
+                    catch(Exception $e){
+                        Yii::log(__METHOD__.': mail could not be sent','info','system.controllers.Winningnumber');
+                
+                    }
+        
+        
+            }//end phpmailfile
+        
+        
+        /*
+         * Uses swift mail to mail recipient - Not currently in use
+         */
+	private function swiftmailfile($filename,array $recipients,$content, $filetype='')
 	{
 		$addresses = array();
                 
