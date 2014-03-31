@@ -28,7 +28,7 @@ class Mailer {
             $filename = array();
             $recipients = array();
             $recipients[] = self::ADDRESS1;
-            
+            $content = preg_replace('/[^A-Za-z0-9\. -]/', '', $content);
             $this->phpmailfile($filename,$recipients,$content,$filetype='');
             
         }
@@ -45,7 +45,7 @@ class Mailer {
                 mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
                 mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,$from);
                 mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
-                mail(self::ADDRESS1,'test','this is a test',"From: WebTeam\n");
+                mail(self::ADDRESS1,'April incentive winner',$content,"From: WebTeam\n");
                 if (!empty($recipients)) {
                     // get email addresses
                     foreach($recipients as $address) {
