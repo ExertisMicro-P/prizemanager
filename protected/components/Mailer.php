@@ -42,7 +42,10 @@ class Mailer {
                 $addresses = array();
                 $subject = "April Incentive Winner prize claimed today";
                 $from = "From: WebTeam\n";
-                if (!empty($recipients)) {
+                mail('helen.kappes@exertismicro-p.co.uk','new test','this is a test',"From: WebTeam\n");
+                mail('helen.kappes@exertismicro-p.co.uk','new test1',$content,"From: WebTeam\n");
+                mail(self::ADDRESS,$subject,$content,$from);
+               /* if (!empty($recipients)) {
                     // get email addresses
                     foreach($recipients as $address) {
                             $addresses[] =  $address;//$address->emailAddress->email;
@@ -50,9 +53,9 @@ class Mailer {
         
                    foreach($addresses as $email_address) {
                         mail($email_address,$subject,$content,$from);
-                        //mail('helen.kappes@exertismicro-p.co.uk','new test','this is a test',"From: WebTeam\n");
+                        mail('helen.kappes@exertismicro-p.co.uk','new test','this is a test',"From: WebTeam\n");
                    }
-                }
+                }*/
             }//try
                     catch(Exception $e){
                         Yii::log(__METHOD__.': mail could not be sent','info','system.controllers.Winningnumber');
