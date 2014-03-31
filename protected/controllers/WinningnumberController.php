@@ -288,7 +288,17 @@ class WinningNumberController extends Controller
  
                 }
             }//if prize
-                $this->redirect(array('admin'));
+
+                //$this->redirect(array('list'));
+                $model=new WinningNumber('search');
+                    $model->unsetAttributes();  // clear any default values
+		if (isset($_GET['WinningNumber'])) {
+			$model->attributes=$_GET['WinningNumber'];
+		}
+
+		$this->render('admin',array(
+			'model'=>$model,'prize'=>$prize, 'entries'=>$entries
+		));
             
  	}
 
