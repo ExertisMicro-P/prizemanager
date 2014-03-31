@@ -20,7 +20,7 @@ class WinningNumberController extends Controller
                         'RestfullYii.filters.ERestFilter +
                         REST.GET, REST.PUT, REST.POST, REST.DELETE'
                     ),
-                    array('auth.filters.AuthFilter - REST.GET, REST.PUT, REST.POST, REST.DELETE + delete'),
+                    array('auth.filters.AuthFilter - REST.GET, REST.PUT, REST.POST, REST.DELETE'),
 		));
 	}
 
@@ -288,6 +288,7 @@ class WinningNumberController extends Controller
  
                 }
             }//if prize
+
                 //$this->redirect(array('list'));
                 $model=new WinningNumber('search');
                     $model->unsetAttributes();  // clear any default values
