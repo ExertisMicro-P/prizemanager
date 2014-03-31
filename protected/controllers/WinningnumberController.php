@@ -20,7 +20,7 @@ class WinningNumberController extends Controller
                         'RestfullYii.filters.ERestFilter +
                         REST.GET, REST.PUT, REST.POST, REST.DELETE'
                     ),
-                    array('auth.filters.AuthFilter - REST.GET, REST.PUT, REST.POST, REST.DELETE'),
+                    array('auth.filters.AuthFilter - REST.GET, REST.PUT, REST.POST, REST.DELETE + delete'),
 		));
 	}
 
@@ -29,6 +29,7 @@ class WinningNumberController extends Controller
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
 	 */
+	 /*
 	public function accessRules()
 	{
 		return array(
@@ -38,6 +39,7 @@ class WinningNumberController extends Controller
             ),
                     );
 	}
+	*/
         
         public function actions()
         {
@@ -200,7 +202,7 @@ class WinningNumberController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		if (Yii::app()->request->isPostRequest) {
+		if (Yii::app()->request->isPostRequest && (Yii::app()->user->checkAccess('WinningNumber.*') || Yii::app()->user->checkAccess('WinningNumber.Delete'))) {
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
 
@@ -225,9 +227,12 @@ class WinningNumberController extends Controller
                 
 	}
         
-        public function actionList(){
+        public function actionAdmin(){
                  
-                $prize = null;
+				
+				$today = date('Y-m-d');
+                $prize = Prize::model()->findByAttributes(array('offer_date'=>$today));
+				
                 $model=new WinningNumber('search');
                     $model->unsetAttributes();  // clear any default values
 		if (isset($_GET['WinningNumber'])) {
@@ -243,7 +248,7 @@ class WinningNumberController extends Controller
 	 * Checks to see if winning number need to be added for that day.
          * If they do directs user to the create view. Otherwise directs user to the list of entries
 	 */
-	public function actionAdmin()
+	public function actionEnternumbers()
 	{
             $win_model=new WinningNumber;
             $today = date('Y-m-d');

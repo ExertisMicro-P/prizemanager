@@ -50,7 +50,7 @@
                 //array('label'=>'Home', 'url'=>array('/site/index')),
 				//array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
 				//array('label'=>'Contact', 'url'=>array('/site/contact')),
-                                array('label'=>'Manage Winning Numbers', 'url'=>array('/winningnumber/admin'), 'visible'=>Yii::app()->user->checkAccess('menu.winningnumber')),
+                                array('label'=>'Enter Winning Numbers', 'url'=>array('/winningnumber/enternumbers'), 'visible'=>(Yii::app()->user->checkAccess('menu.winningnumber') && Yii::app()->user->checkAccess('winningnumber.enternumbers')) ),
                                 array('label'=>'Users Entries', 'url'=>array('/userentry/admin'), 'visible'=>Yii::app()->user->checkAccess('menu.userentry')),
                                 array('label'=>'Manage Prizes', 'url'=>array('/prize/admin'), 'visible'=>Yii::app()->user->checkAccess('menu.prize')),
 				array('label'=>'Permissions', 'url'=>array('/auth'), 'visible'=>Yii::app()->user->isAdmin),
