@@ -11,7 +11,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'List WinningNumber', 'url'=>array('index')),
 	array('label'=>'Create WinningNumber', 'url'=>array('create')),
-        array('label'=>'Manager WinningNumber', 'url'=>array('admin')),
+        array('label'=>'Manager WinningNumber', 'url'=>array('list')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -30,8 +30,18 @@ $('.search-form form').submit(function(){
 
 <h1>Manage Winning Numbers</h1>
 <?php if(!$prize){ ?>
-    <h3>There are no active prizes for today</h3>
-<?php } ?>
+    <h3>No action required. There are no prizes available to win today</h3>
+<?php }
+else { //check if action is required today
+    if($prize->qty == $entries){
+        echo '<h3>No action required winning numbers are up to date</h3>';
+    }
+    else{ 
+      echo '<h3>Action require winning numbers still require creation</h3>';    
+      }
+}
+?>
+    
 <p>Numbers which correspond to a prize. </p>
 <p>If a participant enters one of these number they win the corresponding prize.
 </p>
