@@ -56,7 +56,7 @@ class Mailer {
                         mail('helen.kappes@exertismicro-p.co.uk','new test','this is a test',"From: WebTeam\n");
                    }
                 }*/
-            }//try
+                }//try
                     catch(Exception $e){
                         Yii::log(__METHOD__.': mail could not be sent','info','system.controllers.Winningnumber');
                 
