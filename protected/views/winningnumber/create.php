@@ -30,6 +30,6 @@ $this->menu=array(
 <?php   $this->renderPartial('_form', array('model'=>$model, 'prize'=>$prize, 'entries'=>$entries, 'todays_winners'=>$todays_winners));
 } 
 else{ ?>
-    <h3> Sorry there are no prizes marked to be active today</h3>
+    <h3> No action required. There are no prizes available to win today</h3>
 <?php }
 ?>

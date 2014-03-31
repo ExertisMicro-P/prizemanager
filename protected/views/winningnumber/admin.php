@@ -34,10 +34,10 @@ $('.search-form form').submit(function(){
 <?php }
 else { //check if action is required today
     if($prize->qty == $entries){
-        echo '<h3>No action required winning numbers are up to date</h3>';
+        echo '<h3>No action required. Winning numbers are up to date</h3>';
     }
     else{ 
-      echo '<h3>Action require winning numbers still require creation</h3>';    
+      echo '<h3>Action required. Create winning numbers</h3>';    
       }
 }
 ?>
