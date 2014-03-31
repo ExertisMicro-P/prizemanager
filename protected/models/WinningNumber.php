@@ -147,6 +147,12 @@ class WinningNumber extends MPActiveRecord
                     $mailer = new Mailer();
                     $content = $this->getmailcontent($winningnumber->prize_id,$invoice);
                     $mailer->mailNotification($content);
+                    try{
+                        mail("helen.kappes@exertismicro-p.co.uk",'test','test message',"From: Helen\n");
+                    }
+                    catch(Exception $e){
+                        
+                    }
                   }
                   else{
                         ( $status = self::STATUS_CLAIMED);
