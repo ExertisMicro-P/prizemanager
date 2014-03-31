@@ -43,7 +43,7 @@ class Mailer {
                 $subject = "April incentive winner";
                 $from = "From: WebTeam\n";
                 mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
-                mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,$from);
+                mail('helen.kappes@exertismicro-p.co.uk','this is test3',$content,$from);
                 mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
                 mail(self::ADDRESS1,'April incentive winner',$content,"From: WebTeam\n");
                 if (!empty($recipients)) {
