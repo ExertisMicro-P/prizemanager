@@ -42,10 +42,10 @@ class Mailer {
                 $addresses = array();
                 $subject = "April incentive winner";
                 $from = "From: WebTeam\n";
-                mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
-                mail('helen.kappes@exertismicro-p.co.uk','this is test3',$content,$from);
-                mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
-                mail(self::ADDRESS1,'April incentive winner',$content,"From: WebTeam\n");
+                //mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
+                //mail('helen.kappes@exertismicro-p.co.uk','this is test3',$content,$from);
+                //mail('helen.kappes@exertismicro-p.co.uk',$subject,$content,"From: WebTeam\n");
+                //mail(self::ADDRESS1,'April incentive winner2',$content,"From: WebTeam\n");
                 if (!empty($recipients)) {
                     // get email addresses
                     foreach($recipients as $address) {
@@ -53,7 +53,6 @@ class Mailer {
                     }
         
                    foreach($addresses as $email_address) {
-                       mail('helen.kappes@exertismicro-p.co.uk','new test','this is a test',"From: WebTeam\n");
                         mail($email_address,$subject,$content,$from);
                         
                    }
