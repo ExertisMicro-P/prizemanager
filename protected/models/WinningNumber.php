@@ -93,6 +93,9 @@ class WinningNumber extends MPActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                        'sort'=>array('defaultOrder'=>'t.id DESC',
+						   'attributes'=>array('*'),
+					),
 		));
 	}
 
