@@ -19,9 +19,7 @@ class Mailer {
 	 * @param array $recipients Array of CActiveRecord objects
 	 */
     
-        const ADDRESS1 = 'helen.kappes@exertismicro-p.co.uk';
-        const RECIPIENT = 'Helen Kappes';
-        
+        const ADDRESS1 = 'claimmyprize@exertismicro-p.co.uk';
         
         public function mailNotification($content){
             
