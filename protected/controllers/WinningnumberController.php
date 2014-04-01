@@ -158,7 +158,7 @@ class WinningNumberController extends Controller
                             }
                         }
 			if(empty($error)){
-                            $this->redirect(array('admin'));
+                            $this->redirect(array('enternumbers'));
                         }
                         
 			//if ($model->save()) {
