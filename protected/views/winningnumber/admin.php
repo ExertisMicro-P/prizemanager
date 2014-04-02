@@ -60,6 +60,12 @@ else { //check if action is required today
 		'id',
 		'invoice_no',
 		'prize_id',
+                array(
+                    'name'=>'prize.desc',
+                    'header'=>'Prize Description',
+                    'value'=>'$data->prize->desc',
+                ),
+                
 		'claimed',
 		'timestamp',
 		array(

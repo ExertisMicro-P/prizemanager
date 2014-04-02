@@ -50,6 +50,7 @@ class Prize extends MPActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'winningnumbers'=>array(self::HAS_MANY, 'WinningNumber','prize_id'),
 		);
 	}
         

@@ -24,7 +24,7 @@ $this->menu=array(
 
 
 <?php if($prize){ ?>
-<h3> Prize on offer for today is <?php echo $prize->desc ?> </h3>
+<h3> Prize on offer for <?php echo $prize->offer_date ?> is <?php echo $prize->desc ?> </h3>
 <p> Number of prizes on offer is <?php echo $prize->qty ?> </p>
 <p> Number of invoice number entered so far for this prize <?php echo $entries ?>
 <?php   $this->renderPartial('_form', array('model'=>$model, 'prize'=>$prize, 'entries'=>$entries, 'todays_winners'=>$todays_winners));

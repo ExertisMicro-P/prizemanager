@@ -122,18 +122,37 @@ class WinningNumberController extends Controller
 	public function actionCreate()
 	{
 		$model=new WinningNumber;
+                $prizetodealwith= null;
                 $today = date('Y-m-d');
-                $prize = Prize::model()->findByAttributes(array('offer_date'=>$today));
                 $todays_winners = '';
-                $entries = 0;
-                if($prize){
-                    $data = '';            
-                    $todays_winners=new CActiveDataProvider('WinningNumber', array(
-                        'criteria'=>array(
-                        'condition'=>"prize_id=".$prize->id,
+                $prizes = Prize::model()->findAllByAttributes(array(),
+                array(
+                'condition'=>'offer_date<:today', 
+                'params'=>array(':today'=>$today),
+                'order'=>'offer_date ASC'
+                ));
+                if($prizes){
+                    foreach($prizes as $prize) {
+                        $numwinningnumberenteredforprize = WinningNumber::model()->count(array('condition'=>'prize_id=:prize',
+                        'params'=>array(':prize'=>$prize->getPrimaryKey())
+                            ));
+                        $prizetodealwith = $prize;     
+                        if ($numwinningnumberenteredforprize < $prize->qty) {
+                            $prizetodealwith = $prize;                      
+                            break;
+                        }
+                   } // foreach
+                
+                    
+                    $entries = $numwinningnumberenteredforprize;
+                    if($prizetodealwith){
+                        $data = '';            
+                        $todays_winners=new CActiveDataProvider('WinningNumber', array(
+                            'criteria'=>array(
+                            'condition'=>"prize_id=".$prizetodealwith->id,
                         ),
-                        'pagination'=>array(
-                        'pageSize'=>10,
+                            'pagination'=>array(
+                            'pageSize'=>10,
                         ),
                     ));
                 
@@ -142,7 +161,7 @@ class WinningNumberController extends Controller
                     if($todays_winners){ //previous entries find out how many
                         $entries = WinningNumber::model()->countByAttributes(array('prize_id'=>$prize->id));
                     }
-		
+                 }
                     if (isset($_POST['WinningNumber'])) {
                         $invoices = $_POST['WinningNumber'];
                         $error=array();
@@ -157,17 +176,20 @@ class WinningNumberController extends Controller
                                 }  
                             }
                         }
-			if(empty($error)){
-                            $this->redirect(array('enternumbers'));
+			if($numwinningnumberenteredforprize == $prizetodealwith->qty ){
+                            $this->redirect(array('admin'));
+                            
+                        }
+                        else{
+                            unset($_POST['WinningNumber']);
+                            $this->redirect(array('create'));
                         }
                         
-			//if ($model->save()) {
-			//	$this->redirect(array('view','id'=>$model->id));
-			//}
+                        
                    }
                 }//if prize
 		$this->render('create',array(
-			'model'=>$model, 'prize'=>$prize, 'todays_winners'=>$todays_winners, 'entries'=>$entries
+			'model'=>$model, 'prize'=>$prizetodealwith, 'todays_winners'=>$todays_winners, 'entries'=>$entries
 		));
 	}
 
@@ -228,34 +250,52 @@ class WinningNumberController extends Controller
 	}
         
         public function actionAdmin(){
-                 
-				
-		$today = date('Y-m-d');
-                $entries = 0;
-                $prize = Prize::model()->findByAttributes(array('offer_date'=>$today));
-                if($prize){
-            
-                $todays_winners=new CActiveDataProvider('WinningNumber', array(
-                    'criteria'=>array(
-                    'condition'=>"prize_id=".$prize->id,
-                    ),
-                    'pagination'=>array(
-                    'pageSize'=>10,
-                    ),
-                ));            
-                //a quick validation to ensure entries not required.
-                if($todays_winners){ //previous entries find out how many
-                    $entries = WinningNumber::model()->countByAttributes(array('prize_id'=>$prize->id));
-                }
-                }
+                			
+		$model=new WinningNumber;
+                $prizetodealwith= null;
+                $today = date('Y-m-d');
+                $prizes = Prize::model()->findAllByAttributes(array(),
+                array(
+                'condition'=>'offer_date<:today', 
+                'params'=>array(':today'=>$today),
+                'order'=>'offer_date DESC',
+                'limit'=>1,
+                ));
+                if($prizes){
+                   // foreach($prizes as $prize) {
+                        $numwinningnumberenteredforprize = WinningNumber::model()->count(array('condition'=>'prize_id=:prize',
+                        'params'=>array(':prize'=>$prizes[0]->getPrimaryKey())
+                            ));
+                        
+                        if ($numwinningnumberenteredforprize < $prizes[0]->qty) {
+                            $prizetodealwith = $prizes[0];
+                      
+                        }
+                   // } // foreach
+                
+                    $todays_winners = '';
+                    $entries = $numwinningnumberenteredforprize;
+                    if($prizetodealwith){
+                        $data = '';            
+                        $todays_winners=new CActiveDataProvider('WinningNumber', array(
+                            'criteria'=>array(
+                            'condition'=>"prize_id=".$prizetodealwith->id,
+                        ),
+                            'pagination'=>array(
+                            'pageSize'=>10,
+                        ),
+                    ));
+               
+                    
+                 }
                 $model=new WinningNumber('search');
                     $model->unsetAttributes();  // clear any default values
 		if (isset($_GET['WinningNumber'])) {
 			$model->attributes=$_GET['WinningNumber'];
 		}
-
+                }
 		$this->render('admin',array(
-			'model'=>$model,'prize'=>$prize, 'entries'=>$entries
+			'model'=>$model,'prize'=>$prizes[0], 'entries'=>$entries
 		));
         }
 
@@ -265,40 +305,39 @@ class WinningNumberController extends Controller
 	 */
 	public function actionEnternumbers()
 	{
-            $win_model=new WinningNumber;
-            $today = date('Y-m-d');
-            $entries = 0;
-            $prize = Prize::model()->findByAttributes(array('offer_date'=>$today));
-            if($prize){
-            
-                $todays_winners=new CActiveDataProvider('WinningNumber', array(
-                    'criteria'=>array(
-                    'condition'=>"prize_id=".$prize->id,
-                    ),
-                    'pagination'=>array(
-                    'pageSize'=>10,
-                    ),
-                ));            
-                //a quick validation to ensure entries not required.
-                if($todays_winners){ //previous entries find out how many
-                    $entries = WinningNumber::model()->countByAttributes(array('prize_id'=>$prize->id));
-                }
-                if($entries < $prize->qty){
-                    $this->redirect(array('create'));
- 
-                }
+            $model=new WinningNumber;
+                $prizetodealwith= null;
+                $today = date('Y-m-d');
+                $prizes = Prize::model()->findAllByAttributes(array(),
+                array(
+                'condition'=>'offer_date<:today', 
+                'params'=>array(':today'=>$today),
+                'order'=>'offer_date DESC',
+                'limit'=>1,
+                ));
+                if($prizes){
+                   // foreach($prizes as $prize) {
+                        $numwinningnumberenteredforprize = WinningNumber::model()->count(array('condition'=>'prize_id=:prize',
+                        'params'=>array(':prize'=>$prizes[0]->getPrimaryKey())
+                            ));
+                        
+                        if ($numwinningnumberenteredforprize < $prizes[0]->qty) {
+                            $prizetodealwith = $prizes[0];
+                      
+                        }
+                   // } // foreach
+                
+                    $todays_winners = '';
+                    $entries = $numwinningnumberenteredforprize;
+                    if($prizetodealwith){
+                        
+                        $this->redirect(array('create'));
+                    }
+                 
             }//if prize
 
-                //$this->redirect(array('list'));
-                $model=new WinningNumber('search');
-                    $model->unsetAttributes();  // clear any default values
-		if (isset($_GET['WinningNumber'])) {
-			$model->attributes=$_GET['WinningNumber'];
-		}
-
-		$this->render('admin',array(
-			'model'=>$model,'prize'=>$prize, 'entries'=>$entries
-		));
+                $this->redirect(array('admin'));
+                
             
  	}
 
