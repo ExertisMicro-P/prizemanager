@@ -153,11 +153,11 @@ class WinningNumber extends MPActiveRecord
                     $winningnumber->claimed = self::CLAIMED;
                     if (!$winningnumber->saveWithAuditTrail('invoice '. $invoice . ' claimed'))
     			Yii::log(__METHOD__.': Error saving winningnumber='.print_r($winningnumber,true),'info','system.controllers.WinningNumber');
-                    $status =  self::STATUS_WIN; 
+                    $status =  self::STATUS_WIN;
+                    Yii::log(__METHOD__.': winningnumber='.$invoice,'info','system.controllers.WinningNumber');
                     $mailer = new Mailer();
                     $content = $this->getmailcontent($winningnumber->prize_id,$invoice);
-                    $mailer->mailNotification($content);
-                    
+                    $result = $mailer->mailNotification($content);         
                   }
                   else{
                         ( $status = self::STATUS_CLAIMED);

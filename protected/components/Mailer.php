@@ -20,7 +20,7 @@ class Mailer {
 	 */
     
         const ADDRESS1 = 'claimmyprize@exertismicro-p.co.uk';
-        
+        //const ADDRESS1 = 'helen.kappes@exertismicro-p.co.uk';
         public function mailNotification($content){
             
             $filename = array();
