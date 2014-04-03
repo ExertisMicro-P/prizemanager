@@ -138,6 +138,12 @@ class WinningNumber extends MPActiveRecord
         
         public function isThisaGoldenTicketWinner($invoice){
             $status = 'CHECK BACK LATER';
+             
+             $userentry = new UserEntry;
+             $userentry->invoice_no = $invoice;
+             if (!$userentry->saveWithAuditTrail('invoice '. $invoice . ' entered'))
+                    Yii::log(__METHOD__.': Error saving invoice='.print_r($userentry,true),'info','system.controllers.UserEntry');
+             
             //check this is a valid number
            if(true){//$this->isValidInvoiceNumber($invoice)){
               $winningnumber = self::model()->findByAttributes(array('invoice_no'=>$invoice));
@@ -163,10 +169,10 @@ class WinningNumber extends MPActiveRecord
                 
                 //We need to update the user entry table with number
                 //if(UserEntry::model()->findByAttributes(array('invoice_no'=>$invoice)) == null){
-                    $userentry = new UserEntry;
-                    $userentry->invoice_no = $invoice;
-                    if (!$userentry->saveWithAuditTrail('invoice '. $invoice . ' entered'))
-    			Yii::log(__METHOD__.': Error saving invoice='.print_r($userentry,true),'info','system.controllers.UserEntry');
+                //    $userentry = new UserEntry;
+                //    $userentry->invoice_no = $invoice;
+                //    if (!$userentry->saveWithAuditTrail('invoice '. $invoice . ' entered'))
+    		//	Yii::log(__METHOD__.': Error saving invoice='.print_r($userentry,true),'info','system.controllers.UserEntry');
                 
               //  }
                 return $status;  
