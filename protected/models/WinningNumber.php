@@ -157,7 +157,10 @@ class WinningNumber extends MPActiveRecord
                     Yii::log(__METHOD__.': winningnumber='.$invoice,'info','system.controllers.WinningNumber');
                     $mailer = new Mailer();
                     $content = $this->getmailcontent($winningnumber->prize_id,$invoice);
-                    $result = $mailer->mailNotification($content);         
+                    $result = $mailer->mailNotification($content); 
+                    if($result){
+                        Yii::log(__METHOD__.': winningnumber email sent','info','system.controllers.WinningNumber');
+                    }
                   }
                   else{
                         ( $status = self::STATUS_CLAIMED);
