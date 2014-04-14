@@ -36,7 +36,7 @@ $('.invoice-no').keyup(function(e){
             
         }  
         else{
-            if($(this).val() == ''){
+            if($(this).val() === ''){
                 changetovalid(id);
             }
             else{
@@ -51,7 +51,7 @@ function doprocessnumber(number, id){
 	if(!ajaxinprogress){
             ajaxinprogress = true;
             //create url - can't trust the one browser will create for it's rest like link
-            $loc = $(location).attr('href')
+            $loc = $(location).attr('href');
             $root = $loc.split('/index.php/'); 
             $controller = $root[1].split('/');
             $url = $root[0] + '/index.php/' + $controller[0];
@@ -60,7 +60,7 @@ function doprocessnumber(number, id){
 		  context: document.body,
                   type: 'POST',
 		  data : {
-				number: number,
+				number: number
                                 
 		  		},
 		dataType : 'json',
@@ -70,12 +70,13 @@ function doprocessnumber(number, id){
 			  if(data) {				  
 				  var obj = data;
 				  if (obj.errors != undefined){
-				  if(obj.errors.length>0)
+				  if(obj.errors.length>0){
 					  stockcheck.showerrors(obj.errors);
+                                  }
                                        
 				  }
-                                  if(data.status != 'available'){
-                                      if(data.status != 'valid'){
+                                  if(data.status !== 'available'){
+                                      if(data.status !== 'valid'){
                                       
                                            changetoinvalid(id);
                                            $('#'+id + '_error').html(data.status);
