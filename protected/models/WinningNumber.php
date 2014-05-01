@@ -17,6 +17,8 @@ class WinningNumber extends MPActiveRecord
     const STATUS_LOSE = 'LOSE';
     const STATUS_CLAIMED = 'CLAIMED';
     const STATUS_INVALID = 'INVALID';
+
+    const BIG_PRIZE_DAY = true;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -110,7 +112,7 @@ class WinningNumber extends MPActiveRecord
 	{
 		return parent::model($className);
 	}
-        
+
         /**
 	 *
 	 * Manage Timestamp and user.
@@ -125,7 +127,7 @@ class WinningNumber extends MPActiveRecord
 
 	    return parent::beforeSave();
 	}
-        
+
         public function isValidInvoiceNumber($invoice){
             $invoice_regex = '/^[0-9]{8}$/';
             if(preg_match($invoice_regex,$invoice)){
@@ -135,60 +137,67 @@ class WinningNumber extends MPActiveRecord
                 return false;
             }
         }
-        
+
         public function isThisaGoldenTicketWinner($invoice){
             $status = 'CHECK BACK LATER';
-             
+
              $userentry = new UserEntry;
              $userentry->invoice_no = $invoice;
              if (!$userentry->saveWithAuditTrail('invoice '. $invoice . ' entered'))
                     Yii::log(__METHOD__.': Error saving invoice='.print_r($userentry,true),'info','system.controllers.UserEntry');
-             
+
             //check this is a valid number
            if(true){//$this->isValidInvoiceNumber($invoice)){
               $winningnumber = self::model()->findByAttributes(array('invoice_no'=>$invoice));
               if($winningnumber){ //we have a winner
+
                     //update $winning entry
                  if($winningnumber->claimed == 0){ //not yet claimed
                     $winningnumber->claimed = self::CLAIMED;
-                    if (!$winningnumber->saveWithAuditTrail('invoice '. $invoice . ' claimed'))
-    			Yii::log(__METHOD__.': Error saving winningnumber='.print_r($winningnumber,true),'info','system.controllers.WinningNumber');
-                    $status =  self::STATUS_WIN;
-                    Yii::log(__METHOD__.': winningnumber='.$invoice,'info','system.controllers.WinningNumber');
-                    $mailer = new Mailer();
-                    $content = $this->getmailcontent($winningnumber->prize_id,$invoice);
-                    $result = $mailer->mailNotification($content); 
-                    if($result){
-                        Yii::log(__METHOD__.': winningnumber email sent','info','system.controllers.WinningNumber');
+                    if (!self::BIG_PRIZE_DAY) {
+                        if (!$winningnumber->saveWithAuditTrail('invoice '. $invoice . ' claimed'))
+                            Yii::log(__METHOD__.': Error saving winningnumber='.print_r($winningnumber,true),'info','system.controllers.WinningNumber');
                     }
+                    // 1st MAY - everyone loses until we know the big prize winner
+                    $status =  self::BIG_PRIZE_DAY ?  self::STATUS_LOSE : self::STATUS_WIN;
+
+                    if (!self::BIG_PRIZE_DAY) {
+                        Yii::log(__METHOD__.': winningnumber='.$invoice,'info','system.controllers.WinningNumber');
+                        $mailer = new Mailer();
+                        $content = $this->getmailcontent($winningnumber->prize_id,$invoice);
+                        $result = $mailer->mailNotification($content);
+                        if($result){
+                            Yii::log(__METHOD__.': winningnumber email sent','info','system.controllers.WinningNumber');
+                        }
+                    } // if
                   }
                   else{
                         ( $status = self::STATUS_CLAIMED);
-                  }  //claim              
+                  }  //claim
                 } //candidate
                 else{
                     $status = self::STATUS_LOSE;
                 }
-                
+
                 //We need to update the user entry table with number
                 //if(UserEntry::model()->findByAttributes(array('invoice_no'=>$invoice)) == null){
                 //    $userentry = new UserEntry;
                 //    $userentry->invoice_no = $invoice;
                 //    if (!$userentry->saveWithAuditTrail('invoice '. $invoice . ' entered'))
     		//	Yii::log(__METHOD__.': Error saving invoice='.print_r($userentry,true),'info','system.controllers.UserEntry');
-                
+
               //  }
-                return $status;  
+                return $status;
            }//valid candidate
            else{
                 $status = self::STATUS_INVALID;
                 return $status;
             }
         }
-        
+
         /*
          * Creates an email content specifying - the prize, and winning invoice number
-         * Returns the type string content 
+         * Returns the type string content
          */
         public function getmailcontent($id, $invoice){
             $prize = Prize::model()->findByAttributes(array('id'=>$id));
